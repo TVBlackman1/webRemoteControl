@@ -12,8 +12,11 @@
 </head>
 <body>
 <div class="container">
-    <button id="Paint" class="btn btn-secondary">Paint</button>
-    <button id="shutdown" class="btn btn-secondary">shutdown</button>
+    <button id="Paint" class="btn btn-primary btn-lg btn-block">Paint</button>
+    <button id="shutdown" class="btn btn-danger btn-lg btn-block">shutdown</button>
+    <button id="em-shutdown" class="btn btn-warning btn-lg btn-block">emulate shutdown</button>
+
+    <button id="enter" class="btn btn-outline-success btn-lg btn-block" style="margin-top: 40px;">ENTER TO PLAY DOTA</button>
 </div>
 
 <!-- Optional JavaScript -->
@@ -23,23 +26,40 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script>
     var data;
+    let url = "http://192.168.0.105:80/request";
     $('#Paint').click(function() {
         $.ajax({
-            url: "http://192.168.0.105:80/request",
+            url: url,
             method: "POST",
-            data : { sendedData: 'Paint'},
+            data : { sentData: 'Paint'},
             success : function(data) {
-                // alert(data);
             },
         });
     });
     $('#shutdown').click(function() {
         $.ajax({
-            url: "http://192.168.0.105:80/request",
+            url: url,
             method: "POST",
-            data : { sendedData: 'shutdown'},
+            data : { sentData: 'shutdown'},
             success : function(data) {
-                // alert(data);
+            },
+        });
+    });
+    $('#em-shutdown').click(function() {
+        $.ajax({
+            url: url,
+            method: "POST",
+            data : { sentData: 'em-shutdown'},
+            success : function(data) {
+            },
+        });
+    });
+    $('#enter').click(function() {
+        $.ajax({
+            url: url,
+            method: "POST",
+            data : { sentData: 'enter'},
+            success : function(data) {
             },
         });
     });

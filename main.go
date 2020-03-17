@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-"html/template"
-"log"
-"net/http"
-"os"
-"os/exec"
+	"html/template"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
 )
 
 
@@ -42,14 +44,24 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 
 func reqAjax(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		sendedData := r.FormValue("sendedData")
+		sentData := r.FormValue("sentData")
+		fmt.Println("My request is: ", sentData)
 
-		if sendedData == "Paint" {
+		if sentData == "Paint" {
 			_ = exec.Command("mspaint").Run()
-		} else if sendedData == "shutdown"{
-			_ = exec.Command("shutdown", "/s").Run()
+		} else if sentData == "shutdown"{
+			_ = exec.Command("shutdown", "/s", "/t", "0").Run()
+		} else if sentData == "em-shutdown" {
+			_ = exec.Command("shutdown", "/s", "/t", "30").Run()
+			time.Sleep(20 * time.Second)
+			_ = exec.Command("shutdown", "-a").Run()
+		} else if sentData == "enter" {
+			dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+			file := dir + "\\scripts\\start_dota.exe"
+			er := exec.Command(file).Run()
+			if er != nil {
+				log.Fatal("ListenAndServe ", er, er.Error())
+			}
 		}
-
-		fmt.Println("My request is: ", sendedData)
 	}
 }
